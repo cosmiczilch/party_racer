@@ -16,14 +16,20 @@ namespace Lobby {
         }
 
         public void OnNextCarClicked() {
-            if (this._config.onNextCarClickedCallback != null) {
+            if (this._config != null && this._config.onNextCarClickedCallback != null) {
                 this._config.onNextCarClickedCallback.Invoke();
             }
         }
 
         public void OnPrevCarClicked() {
-            if (this._config.onPrevCarClickedCallback != null) {
+            if (this._config != null && this._config.onPrevCarClickedCallback != null) {
                 this._config.onPrevCarClickedCallback.Invoke();
+            }
+        }
+
+        public void OnRaceButtonClicked() {
+            if (this._config != null && this._config.onRaceButtonCallback != null) {
+                this._config.onRaceButtonCallback.Invoke();
             }
         }
 

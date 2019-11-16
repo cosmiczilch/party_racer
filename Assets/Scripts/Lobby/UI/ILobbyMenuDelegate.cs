@@ -3,5 +3,7 @@ namespace Lobby {
         void HandleRaceButtonClicked();
         void HandleNextCarButtonClicked();
         void HandlePrevCarButtonClicked();
+        void HandleSinglePlayerRaceSelected();
+        void HandleMultiPlayerRaceSelected();
     }
 }

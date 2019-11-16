@@ -54,7 +54,8 @@ namespace Lobby {
 
         #region ILobbyMenuDelegate
         public void HandleRaceButtonClicked() {
-            DebugLog.LogColor("Race", LogColor.green);
+            UIRaceSelectController raceSelectController = new UIRaceSelectController(this);
+            raceSelectController.PresentDialog();
         }
 
         public void HandleNextCarButtonClicked() {
@@ -65,6 +66,14 @@ namespace Lobby {
         public void HandlePrevCarButtonClicked() {
             this._currentCarIndex = (this._currentCarIndex + this._allCarIds.Count - 1) % this._allCarIds.Count;
             this.RefreshCurrentCarView();
+        }
+
+        public void HandleSinglePlayerRaceSelected() {
+            DebugLog.LogColor("Single player race", LogColor.green);
+        }
+
+        public void HandleMultiPlayerRaceSelected() {
+            DebugLog.LogColor("Multi player race", LogColor.green);
         }
         #endregion
     }
