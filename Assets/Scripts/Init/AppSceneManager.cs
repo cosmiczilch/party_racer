@@ -1,4 +1,5 @@
 using Init;
+using Lobby;
 using TimiShared.Debug;
 using TimiShared.Instance;
 using TimiShared.Loading;
@@ -24,11 +25,10 @@ public class AppSceneManager : IInstance {
     public void LoadLobbyScene(System.Action callback = null) {
         this.LoadScene(AppScene.LOBBY_SCENE, (success) => {
             if (success) {
-//                UILobbyController lobbyController = new UILobbyController();
-//                lobbyController.PresentDialog();
-//                if (callback != null) {
-//                    callback.Invoke();
-//                }
+                LobbyController lobbyController = new LobbyController();
+                if (callback != null) {
+                    callback.Invoke();
+                }
             }
         });
     }
