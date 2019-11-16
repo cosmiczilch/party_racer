@@ -1,10 +1,14 @@
+using System.Collections.Generic;
+using Data;
+using ExitGames.Client.Photon;
+using TimiShared.Debug;
 using TimiShared.Extensions;
 using TimiShared.Loading;
 using UnityEngine;
 
 namespace Lobby {
 
-    public class LobbyController {
+    public class LobbyController : ILobbyMenuDelegate {
 
         public LobbyView View {
             get; private set;
@@ -14,9 +18,21 @@ namespace Lobby {
             get; private set;
         }
 
+        public CarDataModel CurrentCar {
+            get {
+                return AppData.Instance.GetCarDataModelByCarId(this._allCarIds[this._currentCarIndex]);
+            }
+        }
+        private List<int> _allCarIds;
+        private int _currentCarIndex;
+
+
         private const string kLobbyViewPath = "Prefabs/Lobby/LobbyView";
 
         public LobbyController() {
+            this._allCarIds = AppData.Instance.GetCarDataModelIds();
+            this._currentCarIndex = 0;
+
             this.CreateView();
         }
 
@@ -26,9 +42,30 @@ namespace Lobby {
             this.View = lobbyViewGO.GetComponent<LobbyView>();
             this.View.AssertNotNull("Lobby View component");
 
-            this.UIView = new UILobbyController();
+            this.RefreshCurrentCarView();
+
+            this.UIView = new UILobbyController(this);
             this.UIView.PresentDialog();
         }
 
+        private void RefreshCurrentCarView() {
+            this.View.SetCurrentCar(this.CurrentCar);
+        }
+
+        #region ILobbyMenuDelegate
+        public void HandleRaceButtonClicked() {
+            DebugLog.LogColor("Race", LogColor.green);
+        }
+
+        public void HandleNextCarButtonClicked() {
+            this._currentCarIndex = (this._currentCarIndex + 1) % this._allCarIds.Count;
+            this.RefreshCurrentCarView();
+        }
+
+        public void HandlePrevCarButtonClicked() {
+            this._currentCarIndex = (this._currentCarIndex + this._allCarIds.Count - 1) % this._allCarIds.Count;
+            this.RefreshCurrentCarView();
+        }
+        #endregion
     }
 }

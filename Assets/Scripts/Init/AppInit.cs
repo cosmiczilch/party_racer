@@ -15,6 +15,9 @@ public class AppInit : AppInitBase {
 
         Application.targetFrameRate = 30;
 
+        AppData appData = new AppData();
+        InstanceLocator.RegisterInstance<AppData>(appData);
+
         AppSceneManager appSceneManager = new AppSceneManager();
         InstanceLocator.RegisterInstance<AppSceneManager>(appSceneManager);
 
