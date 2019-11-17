@@ -177,7 +177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38042897, g: 0.68223196, b: 0.9716981, a: 1}
+  m_Color: {r: 0.9372549, g: 0.96862745, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.072668575, g: 0.31132078, b: 0.04258634, a: 1}
+  m_EffectColor: {r: 0.19607843, g: 0.42352942, b: 0.5372549, a: 1}
   m_EffectDistance: {x: 3, y: 3}
   m_UseGraphicAlpha: 1
 --- !u!1 &614229730224204888
@@ -404,14 +404,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19723275, g: 0.6792453, b: 0.12495552, a: 1}
+  m_Color: {r: 0.15529488, g: 0.18867922, b: 0.15040937, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_Sprite: {fileID: 21300028, guid: a76b481fa37db7c40a6b6b020d7a32a5, type: 3}
+  m_Sprite: {fileID: 21300036, guid: a76b481fa37db7c40a6b6b020d7a32a5, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -488,7 +488,7 @@ MonoBehaviour:
   m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.039969403, g: 0.2830189, b: 0, a: 0.5}
+  m_EffectColor: {r: 0.7928459, g: 1, b: 0.759434, a: 0.5}
   m_EffectDistance: {x: 0, y: 4}
   m_UseGraphicAlpha: 1
 --- !u!1 &3812791221265100133
@@ -602,7 +602,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.38042897, g: 0.68223196, b: 0.9716981, a: 1}
+  m_Color: {r: 0.9372549, g: 0.96862745, b: 1, a: 1}
   m_RaycastTarget: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -686,7 +686,7 @@ MonoBehaviour:
   m_Script: {fileID: -900027084, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.072668575, g: 0.31132078, b: 0.04258634, a: 1}
+  m_EffectColor: {r: 0.19607843, g: 0.42352942, b: 0.5372549, a: 1}
   m_EffectDistance: {x: 3, y: 3}
   m_UseGraphicAlpha: 1
 --- !u!1 &7558975153849265505
