@@ -80,14 +80,21 @@ namespace Lobby {
         public void HandleMultiPlayerRaceSelected() {
             this.ShowCreatingMultiplayerRaceDialog(UICreatingMultiplayerRaceView.State.Connecting);
 
-            AppMultiPlayerManager.Instance.CreateOrJoinRandomRoom(
-                successCallback: () => {
+            AppMultiPlayerManager.Instance.CreateAndStartGame(
+                joinRoomSuccessCallback: () => {
                     this.ShowCreatingMultiplayerRaceDialog(UICreatingMultiplayerRaceView.State.WaitingForOpponents);
                 },
-                failureCallback: () => {
-                    // Handle failure
+                readyToStartGameCallback: () => {
+                    this.ShowCreatingMultiplayerRaceDialog(UICreatingMultiplayerRaceView.State.StartingRace);
+                },
+                timedOutWaitingForPlayersCallback: () => {
                     this.RemoveCreatingMultiplayerRaceDialog();
-                    UIGenericMessageController genericMessageController = new UIGenericMessageController("Failed to find MultiPlayer race at this time. Please try again later.");
+                    UIGenericMessageController genericMessageController = new UIGenericMessageController("Timed out trying to find other players at this time. Please try again later.");
+                    genericMessageController.PresentDialog();
+                },
+                failureCallback: () => {
+                    this.RemoveCreatingMultiplayerRaceDialog();
+                    UIGenericMessageController genericMessageController = new UIGenericMessageController("Failed to connect to MultiPlayer services at this time. Please try again later.");
                     genericMessageController.PresentDialog();
                 });
 
