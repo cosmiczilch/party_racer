@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Data;
 using ExitGames.Client.Photon;
+using Game;
 using TimiMultiPlayer;
 using TimiShared.Debug;
 using TimiShared.Extensions;
@@ -71,9 +72,12 @@ namespace Lobby {
         }
 
         public void HandleSinglePlayerRaceSelected() {
-            AppSceneManager.Instance.LoadGameScene(() => {
-                this.UIView.RemoveDialog();
-            });
+            AppSceneManager.Instance.LoadGameScene(new GameController.Config_t {
+                gameType = GameController.GameType_t.SinglePlayer
+                },
+                callback: () => {
+                    this.UIView.RemoveDialog();
+                });
         }
 
 
@@ -86,6 +90,14 @@ namespace Lobby {
                 },
                 readyToStartGameCallback: () => {
                     this.ShowCreatingMultiplayerRaceDialog(UICreatingMultiplayerRaceView.State.StartingRace);
+                    AppSceneManager.Instance.LoadGameScene(new GameController.Config_t {
+                        gameType = GameController.GameType_t.MultiPlayer
+                    });
+                },
+                createdSceneViewsCallback: () => {
+                    DebugLog.LogColor("All scene views created. Ready to start race", LogColor.green);
+                    this.RemoveCreatingMultiplayerRaceDialog();
+                    this.UIView.RemoveDialog();
                 },
                 timedOutWaitingForPlayersCallback: () => {
                     this.RemoveCreatingMultiplayerRaceDialog();

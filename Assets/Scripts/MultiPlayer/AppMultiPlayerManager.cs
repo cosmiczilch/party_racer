@@ -1,3 +1,9 @@
+using System.Collections.Generic;
+using System.Threading;
+using ExitGames.Client.Photon;
+using Game;
+using Photon.Pun;
+using Photon.Realtime;
 using TimiShared.Debug;
 using TimiShared.Extensions;
 using TimiShared.Instance;
@@ -15,6 +21,7 @@ namespace TimiMultiPlayer {
 
         protected override void OnStartInitialize() {
             InstanceLocator.RegisterInstance<AppMultiPlayerManager>(this);
+            GameController.OnSceneViewsCreated += this.HandleSceneViewsCreated;
         }
 
         #region Parameters
@@ -26,8 +33,9 @@ namespace TimiMultiPlayer {
             get { return 2; }
         }
 
+        // TODO: Change this to 5 or something after testing
         protected override byte MaxPlayersPerRoom {
-            get { return 5; }
+            get { return 2; }
         }
 
         protected override float WaitForMorePlayersTimeoutDurationSeconds {
@@ -39,6 +47,7 @@ namespace TimiMultiPlayer {
 
         public void CreateAndStartGame(System.Action joinRoomSuccessCallback,
                                        System.Action readyToStartGameCallback,
+                                       System.Action createdSceneViewsCallback,
                                        System.Action timedOutWaitingForPlayersCallback,
                                        System.Action failureCallback) {
             if (this._pendingStartGameRequest != null) {
@@ -47,9 +56,14 @@ namespace TimiMultiPlayer {
             }
             this._pendingStartGameRequest = new PendingStartGameRequest {
                 isWaitingToStartGame = false,
+                isWaitingForAllSceneViewsCreated = false,
+
                 onReadyToStartGameCallback = readyToStartGameCallback,
+                onSceneViewsCreatedCallback = createdSceneViewsCallback,
                 onTimedOutWaitingForPlayersCallback = timedOutWaitingForPlayersCallback,
-                waitStartTime = float.MaxValue
+
+                waitToStartGameStartTime = float.MaxValue,
+                waitForSceneViewsStartTime = float.MaxValue
             };
             base.CreateOrJoinRandomRoom(
                 successCallback: () => {
@@ -57,7 +71,7 @@ namespace TimiMultiPlayer {
                         DebugLog.LogWarningColor("Joined room without a start game request. Ignoring", LogColor.brown);
                     } else {
                         this._pendingStartGameRequest.isWaitingToStartGame = true;
-                        this._pendingStartGameRequest.waitStartTime = Time.time;
+                        this._pendingStartGameRequest.waitToStartGameStartTime = Time.time;
                         if (joinRoomSuccessCallback != null) {
                             joinRoomSuccessCallback.Invoke();
                         }
@@ -74,8 +88,13 @@ namespace TimiMultiPlayer {
 
         private class PendingStartGameRequest {
             public bool isWaitingToStartGame;
-            public float waitStartTime;
+            public bool isWaitingForAllSceneViewsCreated;
+
+            public float waitToStartGameStartTime;
+            public float waitForSceneViewsStartTime;
+
             public System.Action onReadyToStartGameCallback;
+            public System.Action onSceneViewsCreatedCallback;
             public System.Action onTimedOutWaitingForPlayersCallback;
         }
         private PendingStartGameRequest _pendingStartGameRequest;
@@ -86,15 +105,29 @@ namespace TimiMultiPlayer {
                 this._pendingStartGameRequest.isWaitingToStartGame) {
 
                 if (this.IsReadyToStartGame()) {
+                    this.CloseCurrentRoomForNewPlayers();
+                    this._pendingStartGameRequest.isWaitingToStartGame = false;
+                    this._pendingStartGameRequest.isWaitingForAllSceneViewsCreated = true;
+                    this._pendingStartGameRequest.waitForSceneViewsStartTime = Time.time;
+
                     this._pendingStartGameRequest.onReadyToStartGameCallback.Invoke();
-                    this._pendingStartGameRequest = null;
 
                 } else {
-                    if ((Time.time - this._pendingStartGameRequest.waitStartTime) >=
+                    if ((Time.time - this._pendingStartGameRequest.waitToStartGameStartTime) >=
                         WaitForMorePlayersTimeoutDurationSeconds) {
+                        this.LeaveRoom();
                         this._pendingStartGameRequest.onTimedOutWaitingForPlayersCallback.Invoke();
                         this._pendingStartGameRequest = null;
                     }
+                }
+            }
+
+            if (this._pendingStartGameRequest != null &&
+                this._pendingStartGameRequest.isWaitingForAllSceneViewsCreated) {
+
+                if (this.AreAllSceneViewsCreated()) {
+                    this._pendingStartGameRequest.onSceneViewsCreatedCallback.Invoke();
+                    this._pendingStartGameRequest = null;
                 }
             }
         }
@@ -112,12 +145,62 @@ namespace TimiMultiPlayer {
                 return true;
             }
 
-            if ((Time.time - this._pendingStartGameRequest.waitStartTime) >= WaitForMorePlayersTimeoutDurationSeconds) {
+            if ((Time.time - this._pendingStartGameRequest.waitToStartGameStartTime) >= WaitForMorePlayersTimeoutDurationSeconds) {
                 return true;
             }
 
             return false;
         }
+
+        private const string kSceneViewCreatedKeyPrefix = "svc:";
+        private const float kWaitForSceneViewsCreatedTimeoutSeconds = 5.0f;
+
+        private bool AreAllSceneViewsCreated() {
+            if (!PhotonNetwork.IsConnected || PhotonNetwork.CurrentRoom == null) {
+                return false;
+            }
+
+            if ((Time.time - this._pendingStartGameRequest.waitForSceneViewsStartTime) >=
+                kWaitForSceneViewsCreatedTimeoutSeconds) {
+                // Tired of waiting. Possibly one or more racers disconnected.
+                // Just start the race.
+                DebugLog.LogWarningColor("Timed out waiting for all players to create scene views", LogColor.orange);
+                return true;
+            }
+
+            Dictionary<int, Player> players = PhotonNetwork.CurrentRoom.Players;
+            foreach (KeyValuePair<int,Player> kvp in players) {
+                string key = kSceneViewCreatedKeyPrefix + kvp.Value.ActorNumber;
+                object isSceneViewCreatedForPlayer = false;
+                if (PhotonNetwork.CurrentRoom.CustomProperties.TryGetValue(key, out isSceneViewCreatedForPlayer)) {
+                    if ((bool) isSceneViewCreatedForPlayer == false) {
+                        return false;
+                    }
+                } else {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void HandleSceneViewsCreated() {
+            if (!PhotonNetwork.IsConnected || PhotonNetwork.CurrentRoom == null) {
+                return;
+            }
+
+            if (this._pendingStartGameRequest != null &&
+               (this._pendingStartGameRequest.isWaitingToStartGame || this._pendingStartGameRequest.isWaitingForAllSceneViewsCreated)) {
+
+                Hashtable hashtable = new Hashtable { { kSceneViewCreatedKeyPrefix + PhotonNetwork.LocalPlayer.ActorNumber, true } };
+                PhotonNetwork.CurrentRoom.SetCustomProperties(hashtable);
+
+
+            } else {
+                // Not waiting to start game. Ignore
+            }
+        }
+
 
     }
 }

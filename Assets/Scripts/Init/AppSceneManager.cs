@@ -1,3 +1,4 @@
+using Game;
 using Init;
 using Lobby;
 using TimiShared.Debug;
@@ -33,14 +34,12 @@ public class AppSceneManager : IInstance {
         });
     }
 
-    public void LoadGameScene(System.Action callback) {
+    public void LoadGameScene(GameController.Config_t config, System.Action callback = null) {
         LoadingScreenManager.Instance.ShowLoadingScreen(true, false);
 
         this.LoadScene(AppScene.GAME_SCENE, (success) => {
             if (success) {
-//                GameController gameController = new GameController(new GameController.Config {
-//                    gameType = gameType
-//                });
+                GameController gameController = new GameController(config);
                 if (callback != null) {
                     callback.Invoke();
                 }

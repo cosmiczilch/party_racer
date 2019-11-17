@@ -73,7 +73,7 @@ namespace TimiMultiPlayer {
             }
         }
 
-        public void StartGameInRoom() {
+        public void CloseCurrentRoomForNewPlayers() {
             if (PhotonNetwork.IsConnected && PhotonNetwork.CurrentRoom != null) {
                 DebugLog.LogColor("Marking room as closed", LogColor.blue);
                 PhotonNetwork.CurrentRoom.IsOpen = false;
