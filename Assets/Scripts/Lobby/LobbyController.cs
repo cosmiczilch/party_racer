@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using Data;
 using ExitGames.Client.Photon;
+using TimiMultiPlayer;
 using TimiShared.Debug;
 using TimiShared.Extensions;
 using TimiShared.Loading;
+using UI;
 using UnityEngine;
 
 namespace Lobby {
@@ -69,11 +71,46 @@ namespace Lobby {
         }
 
         public void HandleSinglePlayerRaceSelected() {
-            DebugLog.LogColor("Single player race", LogColor.green);
+            AppSceneManager.Instance.LoadGameScene(() => {
+                this.UIView.RemoveDialog();
+            });
         }
 
+
         public void HandleMultiPlayerRaceSelected() {
-            DebugLog.LogColor("Multi player race", LogColor.green);
+            this.ShowCreatingMultiplayerRaceDialog(UICreatingMultiplayerRaceView.State.Connecting);
+
+            AppMultiPlayerManager.Instance.CreateOrJoinRandomRoom(
+                successCallback: () => {
+                    this.ShowCreatingMultiplayerRaceDialog(UICreatingMultiplayerRaceView.State.WaitingForOpponents);
+                },
+                failureCallback: () => {
+                    // Handle failure
+                    this.RemoveCreatingMultiplayerRaceDialog();
+                    UIGenericMessageController genericMessageController = new UIGenericMessageController("Failed to find MultiPlayer race at this time. Please try again later.");
+                    genericMessageController.PresentDialog();
+                });
+
+        }
+        #endregion
+
+        #region Creating multiplayer race ui helpers
+        private UICreatingMultiplayerRaceController _creatingMultiplayerRaceController;
+
+        private void ShowCreatingMultiplayerRaceDialog(UICreatingMultiplayerRaceView.State state) {
+            if (this._creatingMultiplayerRaceController == null) {
+                this._creatingMultiplayerRaceController = new UICreatingMultiplayerRaceController(state);
+                this._creatingMultiplayerRaceController.PresentDialog();
+            } else {
+                this._creatingMultiplayerRaceController.SetState(state);
+            }
+        }
+
+        private void RemoveCreatingMultiplayerRaceDialog() {
+            if (this._creatingMultiplayerRaceController != null) {
+                this._creatingMultiplayerRaceController.RemoveDialog();
+                this._creatingMultiplayerRaceController = null;
+            }
         }
         #endregion
     }
