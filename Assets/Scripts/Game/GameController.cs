@@ -1,4 +1,7 @@
+using System.Collections;
+using Game.UI;
 using Lobby;
+using TimiMultiPlayer;
 using TimiShared.Extensions;
 using TimiShared.Instance;
 using TimiShared.Loading;
@@ -40,6 +43,10 @@ namespace Game {
             get; private set;
         }
 
+        public UIGameController UIView {
+            get; private set;
+        }
+
         // Dummy, for IInstance
         public GameController() {
         }
@@ -50,10 +57,18 @@ namespace Game {
             this.Config = config;
 
             this.CreateSceneView();
+
+            CoroutineHelper.Instance.StartCoroutine(this.CheckAndCreateGameViews());
+        }
+
+        public void LeaveGame() {
+            if (this.GameType == GameType_t.MultiPlayer) {
+                AppMultiPlayerManager.Instance.LeaveRoom();
+            }
+            AppSceneManager.Instance.LoadLobbyScene();
         }
 
         private const string kGameViewPrefabPath = "Prefabs/Game/RootGameView";
-
         private void CreateSceneView() {
             PrefabLoader.Instance.InstantiateAsynchronous(kGameViewPrefabPath, null, g => {
                 g.AssertNotNull("Game View game object");
@@ -62,6 +77,24 @@ namespace Game {
 
                 OnSceneViewsCreated.Invoke();
             });
+        }
+
+        public bool ReadyToStartGame { get; set; }
+
+        private IEnumerator CheckAndCreateGameViews() {
+            if (this.GameType == GameType_t.MultiPlayer) {
+                while (!this.ReadyToStartGame) {
+                    yield return null;
+                }
+            }
+
+            this.CreateUIView();
+            // Add more view creations here
+        }
+
+        private void CreateUIView() {
+            this.UIView = new UIGameController();
+            this.UIView.PresentDialog();
         }
 
     }
