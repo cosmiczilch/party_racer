@@ -1,10 +1,13 @@
 using System.Collections;
+using Data;
+using Game.Car;
 using Game.UI;
 using Lobby;
 using TimiMultiPlayer;
 using TimiShared.Extensions;
 using TimiShared.Instance;
 using TimiShared.Loading;
+using UnityEngine;
 
 namespace Game {
 
@@ -27,6 +30,8 @@ namespace Game {
 
         public class Config_t {
             public GameType_t gameType;
+            public CarDataModel carDataModel;
+            public int playerIndex;
         }
 
         public Config_t Config {
@@ -47,6 +52,10 @@ namespace Game {
             get; private set;
         }
 
+        public CarController OurCar {
+            get; private set;
+        }
+
         // Dummy, for IInstance
         public GameController() {
         }
@@ -55,6 +64,7 @@ namespace Game {
             InstanceLocator.RegisterInstance<GameController>(this);
 
             this.Config = config;
+            this.OurCar = new CarController(this.Config.carDataModel);
 
             this.CreateSceneView();
 
@@ -62,6 +72,9 @@ namespace Game {
         }
 
         public void LeaveGame() {
+            if (this.UIView != null) {
+                this.UIView.RemoveDialog();
+            }
             if (this.GameType == GameType_t.MultiPlayer) {
                 AppMultiPlayerManager.Instance.LeaveRoom();
             }
@@ -70,13 +83,13 @@ namespace Game {
 
         private const string kGameViewPrefabPath = "Prefabs/Game/RootGameView";
         private void CreateSceneView() {
-            PrefabLoader.Instance.InstantiateAsynchronous(kGameViewPrefabPath, null, g => {
-                g.AssertNotNull("Game View game object");
-                this.View = g.GetComponent<GameView>();
-                this.View.AssertNotNull("Game View component");
+            GameObject gameViewGO = PrefabLoader.Instance.InstantiateSynchronous(kGameViewPrefabPath, null);
+            gameViewGO.AssertNotNull("Game View game object");
 
-                OnSceneViewsCreated.Invoke();
-            });
+            this.View = gameViewGO.GetComponent<GameView>();
+            this.View.AssertNotNull("Game View component");
+
+            OnSceneViewsCreated.Invoke();
         }
 
         public bool ReadyToStartGame { get; set; }
@@ -88,8 +101,13 @@ namespace Game {
                 }
             }
 
+            this.CreateCarView();
             this.CreateUIView();
             // Add more view creations here
+        }
+
+        private void CreateCarView() {
+            this.OurCar.CreateView(this.View.GetPlayerCarAnchor(this.Config.playerIndex));
         }
 
         private void CreateUIView() {

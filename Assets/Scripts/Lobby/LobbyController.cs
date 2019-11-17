@@ -73,7 +73,9 @@ namespace Lobby {
 
         public void HandleSinglePlayerRaceSelected() {
             AppSceneManager.Instance.LoadGameScene(new GameController.Config_t {
-                gameType = GameController.GameType_t.SinglePlayer
+                    gameType = GameController.GameType_t.SinglePlayer,
+                    carDataModel = this.CurrentCar,
+                    playerIndex = 1
                 },
                 callback: () => {
                     this.UIView.RemoveDialog();
@@ -91,13 +93,18 @@ namespace Lobby {
                 readyToStartGameCallback: () => {
                     this.ShowCreatingMultiplayerRaceDialog(UICreatingMultiplayerRaceView.State.StartingRace);
                     AppSceneManager.Instance.LoadGameScene(new GameController.Config_t {
-                        gameType = GameController.GameType_t.MultiPlayer
+                        gameType = GameController.GameType_t.MultiPlayer,
+                        carDataModel = this.CurrentCar,
+                        playerIndex = AppMultiPlayerManager.Instance.LocalPlayerIndex()
                     });
                 },
                 createdSceneViewsCallback: () => {
                     DebugLog.LogColor("All scene views created. Ready to start race", LogColor.green);
                     this.RemoveCreatingMultiplayerRaceDialog();
                     this.UIView.RemoveDialog();
+                    if (GameController.Instance != null) {
+                        GameController.Instance.ReadyToStartGame = true;
+                    }
                 },
                 timedOutWaitingForPlayersCallback: () => {
                     this.RemoveCreatingMultiplayerRaceDialog();

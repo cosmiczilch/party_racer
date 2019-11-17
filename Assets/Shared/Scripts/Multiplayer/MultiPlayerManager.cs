@@ -96,12 +96,12 @@ namespace TimiMultiPlayer {
             }
         }
 
-        public bool AreWePlayer1() {
-            if (PhotonNetwork.IsConnected && PhotonNetwork.LocalPlayer != null &&
-                PhotonNetwork.IsMasterClient) {
-                return true;
+        public int LocalPlayerIndex() {
+            if (PhotonNetwork.IsConnected && PhotonNetwork.CurrentRoom != null) {
+                return PhotonNetwork.LocalPlayer.ActorNumber;
             }
-            return false;
+
+            return 1;
         }
 
         public GameObject InstantiatePrefab(string prefabPath, Transform parent = null) {

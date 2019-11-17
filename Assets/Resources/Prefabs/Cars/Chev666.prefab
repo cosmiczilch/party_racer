@@ -996,6 +996,7 @@ GameObject:
   - component: {fileID: 4019951310819650}
   - component: {fileID: 578839682}
   - component: {fileID: 578839683}
+  - component: {fileID: -5539127658816790151}
   m_Layer: 0
   m_Name: Chev666
   m_TagString: Untagged
@@ -1053,6 +1054,18 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.9411635, y: 1.2753358, z: 4.520419}
   m_Center: {x: 0, y: 0.62185764, z: 0}
+--- !u!114 &-5539127658816790151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1948821525999562}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fd13d43bedc9422c89ae9376e7b07fd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1967885208801384
 GameObject:
   m_ObjectHideFlags: 0
