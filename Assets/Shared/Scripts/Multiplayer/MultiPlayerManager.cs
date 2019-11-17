@@ -3,37 +3,33 @@ using Photon.Realtime;
 using TimiShared.Debug;
 using TimiShared.Extensions;
 using TimiShared.Init;
-using TimiShared.Instance;
 using UnityEngine;
 
 namespace TimiMultiPlayer {
 
-    public class MultiPlayerManager : MonoBehaviourPunCallbacks, IInstance, IInitializable {
+    public abstract class MultiPlayerManager : MonoBehaviourPunCallbacks, IInitializable {
 
-        public static MultiPlayerManager Instance {
-            get {
-                return InstanceLocator.Instance<MultiPlayerManager>();
-            }
-        }
+        protected abstract string MultiplayerVersion { get; }
+        protected abstract byte MinPlayersPerRoom { get; }
+        protected abstract byte MaxPlayersPerRoom { get; }
+        protected abstract float WaitForMorePlayersTimeoutDurationSeconds { get; }
 
-        // TODO: Get this from some config in the app
-        #region Constants
-        private const string kGameMultiPlayerVersion = "1.0";
-        private const byte kMaxPlayersPerRoom = 2;
-        #endregion
 
         #region IInitializable
         public void StartInitialize() {
-            InstanceLocator.RegisterInstance<MultiPlayerManager>(this);
-
             // Do NOT automatically sync scene as that causes weird effects
             // when playing across devices with drastically different processing speeds
             // PhotonNetwork.AutomaticallySyncScene = true;
 
-            PhotonNetwork.GameVersion = kGameMultiPlayerVersion;
+            PhotonNetwork.GameVersion = this.MultiplayerVersion;
             PhotonNetwork.NickName = SystemInfo.operatingSystem;
 
+            this.OnStartInitialize();
+
             this.CheckAndConnectToPhotonNetwork();
+        }
+
+        protected virtual void OnStartInitialize() {
         }
 
         public bool IsFullyInitialized {
@@ -151,7 +147,7 @@ namespace TimiMultiPlayer {
             if (this._pendingRoomJoinRequest != null) {
                 DebugLog.LogColor("Could not find random room to join. Join failure reason: " + returnCode.ToString(), LogColor.blue);
                 DebugLog.LogColor("Attempting to create a new room", LogColor.blue);
-                PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = kMaxPlayersPerRoom });
+                PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = this.MaxPlayersPerRoom });
             }
         }
 

@@ -891,7 +891,7 @@ MonoBehaviour:
   _sharedInit: {fileID: 114376329822684916}
   _firstLaunchManager: {fileID: 114531721375192052}
   _appConfig: {fileID: 114586299818826516}
-  _multiPlayerManager: {fileID: 8181433463218588915}
+  _multiPlayerManager: {fileID: 8639406401178034}
   _dataModelsLoader: {fileID: 114190530818542666}
   _identityManager: {fileID: 114879130184967778}
   _appInit: {fileID: 1067228223}
@@ -1168,9 +1168,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4074576237015561291}
-  - component: {fileID: 8181433463218588915}
+  - component: {fileID: 8639406401178034}
   m_Layer: 0
-  m_Name: MultiPlayerManager
+  m_Name: AppMultiPlayerManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1190,7 +1190,7 @@ Transform:
   m_Father: {fileID: 4023189303604636}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8181433463218588915
+--- !u!114 &8639406401178034
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1199,7 +1199,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6226568157740636062}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae38badc04bb046568ed699d4bf3162f, type: 3}
+  m_Script: {fileID: 11500000, guid: 73f63ac50335a442d8e60ae097a5736f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8076993910898739027
