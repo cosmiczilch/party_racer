@@ -17,12 +17,14 @@ public class AppData : IInstance {
         new CarDataModel {
             carId = 1,
             carName = "Chevrolet Camaro",
-            prefabPath = "Prefabs/Cars/Chev666",
+            garagePrefabPath = "Prefabs/Cars/Chev666_garage",
+            racePrefabPath = "Prefabs/Cars/Chev666",
         },
         new CarDataModel {
             carId = 2,
             carName = "Toresta 11",
-            prefabPath = "Prefabs/Cars/Tor11",
+            garagePrefabPath = "Prefabs/Cars/Tor11_garage",
+            racePrefabPath = "Prefabs/Cars/Tor11",
         },
     };
     private Dictionary<int, CarDataModel> _carDataModelsDict = new Dictionary<int, CarDataModel>();

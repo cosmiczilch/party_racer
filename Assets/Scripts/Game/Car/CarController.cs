@@ -1,4 +1,5 @@
 using Data;
+using TimiMultiPlayer;
 using TimiShared.Extensions;
 using TimiShared.Loading;
 using UnityEngine;
@@ -20,7 +21,12 @@ namespace Game.Car {
         }
 
         public void CreateView(Transform startingPositionTransform) {
-            GameObject carGO = PrefabLoader.Instance.InstantiateSynchronous(this.CarDataModel.prefabPath, null);
+            GameObject carGO;
+            if (GameController.Instance.GameType == GameController.GameType_t.SinglePlayer) {
+                carGO = PrefabLoader.Instance.InstantiateSynchronous(this.CarDataModel.racePrefabPath, null);
+            } else {
+                carGO = AppMultiPlayerManager.Instance.InstantiatePrefab(this.CarDataModel.racePrefabPath, null);
+            }
             carGO.AssertNotNull("Car view game object");
 
             this.View = carGO.GetComponent<CarView>();

@@ -13,7 +13,7 @@ namespace Lobby {
 
         public void SetCurrentCar(CarDataModel carDataModel) {
             this.UnloadCurrentCar();
-            GameObject go = PrefabLoader.Instance.InstantiateSynchronous(carDataModel.prefabPath, this._carAnchor);
+            GameObject go = PrefabLoader.Instance.InstantiateSynchronous(carDataModel.garagePrefabPath, this._carAnchor);
             go.AssertNotNull("Car game object for car id: " + carDataModel.carId);
             this._loadedCar = go.transform;
         }

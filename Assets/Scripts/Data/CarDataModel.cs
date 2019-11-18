@@ -3,7 +3,8 @@ namespace Data {
 
         public int carId;
         public string carName;
-        public string prefabPath;
+        public string garagePrefabPath;
+        public string racePrefabPath;
 
     }
 }
