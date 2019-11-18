@@ -107,7 +107,7 @@ namespace Game {
         }
 
         private void CreateCarView() {
-            this.OurCar.CreateView(this.View.GetPlayerCarAnchor(this.Config.playerIndex));
+            this.OurCar.CreateViewAndPhysicsController(this.View.GetPlayerCarAnchor(this.Config.playerIndex));
         }
 
         private void CreateUIView() {

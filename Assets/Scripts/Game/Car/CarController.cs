@@ -1,6 +1,5 @@
 using Data;
 using TimiMultiPlayer;
-using TimiShared.Debug;
 using TimiShared.Extensions;
 using TimiShared.Loading;
 using UnityEngine;
@@ -17,11 +16,17 @@ namespace Game.Car {
             get; private set;
         }
 
+        public CarPhysics CarPhysics {
+            get; private set;
+        }
+
         public CarController(CarDataModel carDataModel) {
             this.CarDataModel = carDataModel;
         }
 
-        public void CreateView(Transform startingPositionTransform) {
+        private const string kCarPhysicsPrefabPath = "Prefabs/Game/CarPhysics";
+
+        public void CreateViewAndPhysicsController(Transform startingPositionTransform) {
             GameObject carGO;
             if (GameController.Instance.GameType == GameController.GameType_t.SinglePlayer) {
                 carGO = PrefabLoader.Instance.InstantiateSynchronous(this.CarDataModel.racePrefabPath, null);
@@ -34,16 +39,25 @@ namespace Game.Car {
             this.View.AssertNotNull("Car view component");
 
             this.View.transform.SetPositionAndRotation(startingPositionTransform.position, startingPositionTransform.rotation);
+
+            GameObject carPhysicsGO = PrefabLoader.Instance.InstantiateSynchronous(kCarPhysicsPrefabPath, null);
+            carPhysicsGO.AssertNotNull("Car Physics game object");
+
+            this.CarPhysics = carPhysicsGO.GetComponent<CarPhysics>();
+            this.CarPhysics.AssertNotNull("Car Physics component");
+            this.CarPhysics.Initialize(this, this.View);
+        }
+
+        public bool IsGasPedalDown {
+            get; private set;
         }
 
         public void HandleGasPedalDown() {
-            DebugLog.LogColor("Gas Pedal down", LogColor.red);
-
+            this.IsGasPedalDown = true;
         }
 
         public void HandleGasPedalUp() {
-            DebugLog.LogColor("Gas Pedal up", LogColor.yellow);
-
+            this.IsGasPedalDown = false;
         }
 
     }
