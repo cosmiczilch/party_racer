@@ -24,7 +24,7 @@ namespace Game.Car {
 
         private void FixedUpdate() {
             if (this.Controller.IsGasPedalDown) {
-                this._carRigidBody.AddForce(this.View.transform.forward * 1.0f, ForceMode.Impulse);
+                this._carRigidBody.AddForce(this.View.transform.forward * 0.5f, ForceMode.Impulse);
             }
         }
     }

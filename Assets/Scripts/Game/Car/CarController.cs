@@ -25,6 +25,7 @@ namespace Game.Car {
         }
 
         private const string kCarPhysicsPrefabPath = "Prefabs/Game/CarPhysics";
+        private const string kCarCameraHolderPrefabPath = "Prefabs/Game/CarCameraHolder";
 
         public void CreateViewAndPhysicsController(Transform startingPositionTransform) {
             GameObject carGO;
@@ -39,6 +40,8 @@ namespace Game.Car {
             this.View.AssertNotNull("Car view component");
 
             this.View.transform.SetPositionAndRotation(startingPositionTransform.position, startingPositionTransform.rotation);
+
+            PrefabLoader.Instance.InstantiateSynchronous(kCarCameraHolderPrefabPath, this.View.transform);
 
             GameObject carPhysicsGO = PrefabLoader.Instance.InstantiateSynchronous(kCarPhysicsPrefabPath, null);
             carPhysicsGO.AssertNotNull("Car Physics game object");
