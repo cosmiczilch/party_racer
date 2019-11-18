@@ -1,5 +1,6 @@
 using Data;
 using TimiMultiPlayer;
+using TimiShared.Debug;
 using TimiShared.Extensions;
 using TimiShared.Loading;
 using UnityEngine;
@@ -33,6 +34,16 @@ namespace Game.Car {
             this.View.AssertNotNull("Car view component");
 
             this.View.transform.SetPositionAndRotation(startingPositionTransform.position, startingPositionTransform.rotation);
+        }
+
+        public void HandleGasPedalDown() {
+            DebugLog.LogColor("Gas Pedal down", LogColor.red);
+
+        }
+
+        public void HandleGasPedalUp() {
+            DebugLog.LogColor("Gas Pedal up", LogColor.yellow);
+
         }
 
     }

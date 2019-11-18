@@ -5,6 +5,8 @@ namespace Game.UI {
 
         public class Config {
             public System.Action onLeaveRaceButtonCallback;
+            public System.Action onGasPedalDownCallback;
+            public System.Action onGasPedalUpCallback;
         }
         private Config _config;
 
@@ -15,6 +17,18 @@ namespace Game.UI {
         public void OnLeaveRaceButtonClicked() {
             if (this._config != null && this._config.onLeaveRaceButtonCallback != null) {
                 this._config.onLeaveRaceButtonCallback.Invoke();
+            }
+        }
+
+        public void OnGasPedalDown() {
+            if (this._config != null && this._config.onGasPedalDownCallback != null) {
+                this._config.onGasPedalDownCallback.Invoke();
+            }
+        }
+
+        public void OnGasPedalUp() {
+            if (this._config != null && this._config.onGasPedalUpCallback != null) {
+                this._config.onGasPedalUpCallback.Invoke();
             }
         }
     }

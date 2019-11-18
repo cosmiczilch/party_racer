@@ -111,9 +111,23 @@ namespace Game {
         }
 
         private void CreateUIView() {
-            this.UIView = new UIGameController();
+            this.UIView = new UIGameController(new UIGameController.Config {
+                onGasPedalUpCallback = this.HandleGasPedalUpCallback,
+                onGasPedalDownCallback = this.HandleGasPedalDownCallback
+            });
             this.UIView.PresentDialog();
         }
 
+        private void HandleGasPedalDownCallback() {
+            if (this.OurCar != null) {
+                this.OurCar.HandleGasPedalDown();
+            }
+        }
+
+        private void HandleGasPedalUpCallback() {
+            if (this.OurCar != null) {
+                this.OurCar.HandleGasPedalUp();
+            }
+        }
     }
 }
