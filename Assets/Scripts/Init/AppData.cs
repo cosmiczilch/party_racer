@@ -12,7 +12,7 @@ public class AppData : IInstance {
         }
     }
 
-    #region Car Data
+    #region Data
     private List<CarDataModel> _carDataModels = new List<CarDataModel> {
         new CarDataModel {
             carId = 1,
@@ -23,7 +23,7 @@ public class AppData : IInstance {
             drag = 2.5f,
             engineForceMax = 2.5f,
             engineForceMin = 0.8f,
-            engineForceRampUpTime = 10.0f,
+            engineForceRampUpTime = 250.0f,
             engineForceRampDownTime = 1000.0f,
             brakingForce = 0.05f
         },
@@ -32,19 +32,28 @@ public class AppData : IInstance {
             carName = "Toresta 11",
             garagePrefabPath = "Prefabs/Cars/Tor11_garage",
             racePrefabPath = "Prefabs/Cars/Tor11",
-            mass = 1.9f,
+            mass = 1.8f,
             drag = 1.6f,
-            engineForceMax = 1.6f,
+            engineForceMax = 1.35f,
             engineForceMin = 0.6f,
-            engineForceRampUpTime = 6.0f,
+            engineForceRampUpTime = 160.0f,
             engineForceRampDownTime = 3000.0f,
             brakingForce = 0.02f
         },
     };
     private Dictionary<int, CarDataModel> _carDataModelsDict = new Dictionary<int, CarDataModel>();
+
+    private CarStatDisplayDataModel _carStatDisplayData = new CarStatDisplayDataModel {
+        carSpeedMax_game_units = 20.0f,
+        carSpeedConversionFactor_game_to_real = 5.0f
+    };
     #endregion
 
     #region Public API
+    public CarStatDisplayDataModel CarStatDisplayDataModel {
+        get { return this._carStatDisplayData; }
+    }
+
     public CarDataModel GetCarDataModelByCarId(int carId) {
         CarDataModel res = null;
         if (!this._carDataModelsDict.TryGetValue(carId, out res)) {

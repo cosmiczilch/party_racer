@@ -1,7 +1,12 @@
 using TimiShared.UI;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Game.UI {
     public class UIGameView : DialogViewBase {
+
+        [SerializeField] private Transform _speedometerNeedle = null;
+        [SerializeField] private Text _speedometerReadingText = null;
 
         public class Config {
             public System.Action onLeaveRaceButtonCallback;
@@ -44,6 +49,25 @@ namespace Game.UI {
             if (this._config != null && this._config.onBrakePedalUpCallback != null) {
                 this._config.onBrakePedalUpCallback.Invoke();
             }
+        }
+
+        private void UpdateSpeedometer() {
+            if (GameController.Instance != null &&
+                GameController.Instance.OurCar != null) {
+
+                float speedInGame = GameController.Instance.OurCar.CurrentSpeed;
+                float normalizedSpeed = speedInGame / AppData.Instance.CarStatDisplayDataModel.carSpeedMax_game_units;
+                float needleAngle = Mathf.Lerp(-90, 90, normalizedSpeed);
+
+                this._speedometerNeedle.transform.rotation = Quaternion.AngleAxis(needleAngle, -this._speedometerNeedle.transform.forward);
+
+                float realSpeed = speedInGame * AppData.Instance.CarStatDisplayDataModel.carSpeedConversionFactor_game_to_real;
+                this._speedometerReadingText.text = ((int)realSpeed).ToString() + " MPH";
+            }
+        }
+
+        private void Update() {
+            this.UpdateSpeedometer();
         }
     }
 }

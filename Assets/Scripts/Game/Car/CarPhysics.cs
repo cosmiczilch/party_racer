@@ -13,6 +13,15 @@ namespace Game.Car {
             get; private set;
         }
 
+        public float CurrentSpeed {
+            get {
+                if (this._carRigidBody != null) {
+                    return this._carRigidBody.velocity.magnitude;
+                }
+                return 0.0f;
+            }
+        }
+
         private Rigidbody _carRigidBody = null;
 
         public void Initialize(CarController controller, CarView view) {

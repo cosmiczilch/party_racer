@@ -20,6 +20,15 @@ namespace Game.Car {
             get; private set;
         }
 
+        public float CurrentSpeed {
+            get {
+                if (this.CarPhysics != null) {
+                    return this.CarPhysics.CurrentSpeed;
+                }
+                return 0.0f;
+            }
+        }
+
         public CarController(CarDataModel carDataModel) {
             this.CarDataModel = carDataModel;
         }
