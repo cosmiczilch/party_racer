@@ -4,8 +4,6 @@ namespace Game.Car {
 
     public class CarPhysics : MonoBehaviour {
 
-        [SerializeField] private AnimationCurve _brakingCurve = null;
-
         public CarController Controller {
             get; private set;
         }
@@ -41,19 +39,36 @@ namespace Game.Car {
         }
 
         private void ApplyYaw() {
-            int direction = 0;
+            float direction = this.GetTurningDirection();
+
+            this.View.transform.RotateAround(this.View.transform.position, this.View.transform.up, direction);
+        }
+
+        /// <summary>
+        /// Get the turning direction from either keyboard (editor and standalone)
+        /// or accelerometer (device)
+        /// </summary>
+        /// <returns>
+        /// 0 implies no turn
+        /// [-1, 0) values for left turn
+        /// (0, +1] values for right turn
+        /// In editor and standalone the value is an integer (-1, 0, or +1)
+        /// </returns>
+        private float GetTurningDirection() {
+            float direction = 0;
+
+#if UNITY_EDITOR || UNITY_STANDALONE
             if (Input.GetKey(KeyCode.A)) {
                 direction = -1;
             }
             else if (Input.GetKey(KeyCode.D)) {
                 direction = 1;
             }
+#else
+            direction = Input.acceleration.x * 1.5f;
+#endif
 
-            if (direction == 0) {
-                return;
-            }
-
-            this.View.transform.RotateAround(this.View.transform.position, this.View.transform.up, direction * 0.4f);
+            return direction;
         }
     }
 }
