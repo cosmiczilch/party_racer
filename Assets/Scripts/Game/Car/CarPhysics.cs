@@ -34,12 +34,21 @@ namespace Game.Car {
             this.ApplyThrust();
         }
 
+        private float _lastAppliedEngineForce = 0.0f;
         private void ApplyThrust() {
 
-            float engineThrust = this.Controller.CarDataModel.engineForce;
+            float engineThrust = 0.0f;
             if (this.Controller.IsGasPedalDown) {
-                this._carRigidBody.AddForce(this.View.transform.forward * engineThrust, ForceMode.Impulse);
+                engineThrust = Mathf.Lerp(Mathf.Max(this._lastAppliedEngineForce, this.Controller.CarDataModel.engineForceMin),
+                                          this.Controller.CarDataModel.engineForceMax,
+                                          this.Controller.TimeSinceGasPedalDown / this.Controller.CarDataModel.engineForceRampUpTime);
+            } else {
+                engineThrust = Mathf.Lerp(
+                    this._lastAppliedEngineForce, 0.0f, this.Controller.TimeSinceGasPedalUp / this.Controller.CarDataModel.engineForceRampDownTime);
             }
+
+            this._carRigidBody.AddForce(this.View.transform.forward * engineThrust, ForceMode.Impulse);
+            this._lastAppliedEngineForce = engineThrust;
         }
 
         private void ApplyYaw() {

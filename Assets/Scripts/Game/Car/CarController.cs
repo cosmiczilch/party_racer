@@ -55,11 +55,28 @@ namespace Game.Car {
             get; private set;
         }
 
+        private float _gasPedalUpTime = float.MinValue;
+        private float _gasPedalDownTime = float.MaxValue;
+
+        public float TimeSinceGasPedalDown {
+            get {
+                return Mathf.Max(Time.time - this._gasPedalDownTime, 0.0f);
+            }
+        }
+
+        public float TimeSinceGasPedalUp {
+            get {
+                return Mathf.Max(Time.time - this._gasPedalUpTime, 0.0f);
+            }
+        }
+
         public void HandleGasPedalDown() {
+            this._gasPedalDownTime = Time.time;
             this.IsGasPedalDown = true;
         }
 
         public void HandleGasPedalUp() {
+            this._gasPedalUpTime = Time.time;
             this.IsGasPedalDown = false;
         }
 

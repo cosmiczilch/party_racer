@@ -8,7 +8,12 @@ namespace Data {
 
         public float mass;
         public float drag;
-        public float engineForce;
+
+        public float engineForceMin;
+        public float engineForceMax;
+        public float engineForceRampUpTime;
+        public float engineForceRampDownTime;
+
         public float brakingForce;
 
     }

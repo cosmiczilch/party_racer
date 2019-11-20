@@ -21,7 +21,10 @@ public class AppData : IInstance {
             racePrefabPath = "Prefabs/Cars/Chev666",
             mass = 2.5f,
             drag = 2.5f,
-            engineForce = 2.5f,
+            engineForceMax = 2.5f,
+            engineForceMin = 0.8f,
+            engineForceRampUpTime = 10.0f,
+            engineForceRampDownTime = 1000.0f,
             brakingForce = 1.0f
         },
         new CarDataModel {
@@ -30,8 +33,11 @@ public class AppData : IInstance {
             garagePrefabPath = "Prefabs/Cars/Tor11_garage",
             racePrefabPath = "Prefabs/Cars/Tor11",
             mass = 1.9f,
-            drag = 1.8f,
-            engineForce = 2.0f,
+            drag = 1.6f,
+            engineForceMax = 1.6f,
+            engineForceMin = 0.6f,
+            engineForceRampUpTime = 6.0f,
+            engineForceRampDownTime = 3000.0f,
             brakingForce = 0.5f
         },
     };
