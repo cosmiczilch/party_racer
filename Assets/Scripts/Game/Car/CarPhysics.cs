@@ -19,6 +19,10 @@ namespace Game.Car {
             this.View = view;
 
             this._carRigidBody = this.View.gameObject.GetComponent<Rigidbody>();
+            if (this._carRigidBody != null) {
+                this._carRigidBody.mass = this.Controller.CarDataModel.mass;
+                this._carRigidBody.drag = this.Controller.CarDataModel.drag;
+            }
         }
 
         private void FixedUpdate() {
@@ -32,7 +36,7 @@ namespace Game.Car {
 
         private void ApplyThrust() {
 
-            float engineThrust = 2.5f;
+            float engineThrust = this.Controller.CarDataModel.engineForce;
             if (this.Controller.IsGasPedalDown) {
                 this._carRigidBody.AddForce(this.View.transform.forward * engineThrust, ForceMode.Impulse);
             }

@@ -19,12 +19,20 @@ public class AppData : IInstance {
             carName = "Chevrolet Camaro",
             garagePrefabPath = "Prefabs/Cars/Chev666_garage",
             racePrefabPath = "Prefabs/Cars/Chev666",
+            mass = 2.5f,
+            drag = 2.5f,
+            engineForce = 2.5f,
+            brakingForce = 1.0f
         },
         new CarDataModel {
             carId = 2,
             carName = "Toresta 11",
             garagePrefabPath = "Prefabs/Cars/Tor11_garage",
             racePrefabPath = "Prefabs/Cars/Tor11",
+            mass = 1.9f,
+            drag = 1.8f,
+            engineForce = 2.0f,
+            brakingForce = 0.5f
         },
     };
     private Dictionary<int, CarDataModel> _carDataModelsDict = new Dictionary<int, CarDataModel>();

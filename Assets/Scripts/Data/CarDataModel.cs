@@ -6,5 +6,10 @@ namespace Data {
         public string garagePrefabPath;
         public string racePrefabPath;
 
+        public float mass;
+        public float drag;
+        public float engineForce;
+        public float brakingForce;
+
     }
 }
