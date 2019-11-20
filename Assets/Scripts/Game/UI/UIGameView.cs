@@ -7,6 +7,8 @@ namespace Game.UI {
             public System.Action onLeaveRaceButtonCallback;
             public System.Action onGasPedalDownCallback;
             public System.Action onGasPedalUpCallback;
+            public System.Action onBrakePedalDownCallback;
+            public System.Action onBrakePedalUpCallback;
         }
         private Config _config;
 
@@ -29,6 +31,18 @@ namespace Game.UI {
         public void OnGasPedalUp() {
             if (this._config != null && this._config.onGasPedalUpCallback != null) {
                 this._config.onGasPedalUpCallback.Invoke();
+            }
+        }
+
+        public void OnBrakePedalDown() {
+            if (this._config != null && this._config.onBrakePedalDownCallback != null) {
+                this._config.onBrakePedalDownCallback.Invoke();
+            }
+        }
+
+        public void OnBrakePedalUp() {
+            if (this._config != null && this._config.onBrakePedalUpCallback != null) {
+                this._config.onBrakePedalUpCallback.Invoke();
             }
         }
     }

@@ -25,7 +25,7 @@ public class AppData : IInstance {
             engineForceMin = 0.8f,
             engineForceRampUpTime = 10.0f,
             engineForceRampDownTime = 1000.0f,
-            brakingForce = 1.0f
+            brakingForce = 0.05f
         },
         new CarDataModel {
             carId = 2,
@@ -38,7 +38,7 @@ public class AppData : IInstance {
             engineForceMin = 0.6f,
             engineForceRampUpTime = 6.0f,
             engineForceRampDownTime = 3000.0f,
-            brakingForce = 0.5f
+            brakingForce = 0.02f
         },
     };
     private Dictionary<int, CarDataModel> _carDataModelsDict = new Dictionary<int, CarDataModel>();

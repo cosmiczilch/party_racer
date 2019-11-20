@@ -80,5 +80,16 @@ namespace Game.Car {
             this.IsGasPedalDown = false;
         }
 
+        public bool IsBrakePedalDown {
+            get; private set;
+        }
+
+        public void HandleBrakePedalDown() {
+            this.IsBrakePedalDown = true;
+        }
+
+        public void HandleBrakePedalUp() {
+            this.IsBrakePedalDown = false;
+        }
     }
 }

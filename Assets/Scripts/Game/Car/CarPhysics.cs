@@ -1,3 +1,4 @@
+using TimiShared.Debug;
 using UnityEngine;
 
 namespace Game.Car {
@@ -34,21 +35,26 @@ namespace Game.Car {
             this.ApplyThrust();
         }
 
-        private float _lastAppliedEngineForce = 0.0f;
+        private float _lastAppliedThrust = 0.0f;
         private void ApplyThrust() {
 
             float engineThrust = 0.0f;
             if (this.Controller.IsGasPedalDown) {
-                engineThrust = Mathf.Lerp(Mathf.Max(this._lastAppliedEngineForce, this.Controller.CarDataModel.engineForceMin),
+                engineThrust = Mathf.Lerp(Mathf.Max(this._lastAppliedThrust, this.Controller.CarDataModel.engineForceMin),
                                           this.Controller.CarDataModel.engineForceMax,
                                           this.Controller.TimeSinceGasPedalDown / this.Controller.CarDataModel.engineForceRampUpTime);
             } else {
                 engineThrust = Mathf.Lerp(
-                    this._lastAppliedEngineForce, 0.0f, this.Controller.TimeSinceGasPedalUp / this.Controller.CarDataModel.engineForceRampDownTime);
+                    this._lastAppliedThrust, 0.0f, this.Controller.TimeSinceGasPedalUp / this.Controller.CarDataModel.engineForceRampDownTime);
             }
 
-            this._carRigidBody.AddForce(this.View.transform.forward * engineThrust, ForceMode.Impulse);
-            this._lastAppliedEngineForce = engineThrust;
+            float totalThrust = engineThrust -
+                                (this.Controller.IsBrakePedalDown ? this.Controller.CarDataModel.brakingForce
+                                                                  : 0.0f);
+            totalThrust = Mathf.Max(totalThrust, 0.0f);
+
+            this._carRigidBody.AddForce(this.View.transform.forward * totalThrust, ForceMode.Impulse);
+            this._lastAppliedThrust = totalThrust;
         }
 
         private void ApplyYaw() {
