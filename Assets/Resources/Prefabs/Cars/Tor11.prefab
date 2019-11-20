@@ -251,6 +251,7 @@ GameObject:
   - component: {fileID: -1904107358505332433}
   - component: {fileID: -9207751609675041998}
   - component: {fileID: -1470933895523205480}
+  - component: {fileID: 1604109080098309703}
   m_Layer: 0
   m_Name: Tor11
   m_TagString: Untagged
@@ -293,8 +294,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2.0875149, y: 1.3171206, z: 5.1225624}
-  m_Center: {x: 0, y: 0.6504879, z: 0}
+  m_Size: {x: 2.0875149, y: 1.3171206, z: 3.6090586}
+  m_Center: {x: 0, y: 0.6504879, z: -0.015955687}
 --- !u!54 &6718730792317882155
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -361,6 +362,20 @@ MonoBehaviour:
   m_SynchronizePosition: 1
   m_SynchronizeRotation: 1
   m_SynchronizeScale: 0
+--- !u!136 &1604109080098309703
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423952079192398}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.85159945
+  m_Height: 5.2894025
+  m_Direction: 2
+  m_Center: {x: 0, y: 0.88933396, z: -0.12515998}
 --- !u!1 &1612111174978656
 GameObject:
   m_ObjectHideFlags: 0
