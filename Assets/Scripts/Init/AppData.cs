@@ -16,16 +16,17 @@ public class AppData : IInstance {
     private List<CarDataModel> _carDataModels = new List<CarDataModel> {
         new CarDataModel {
             carId = 1,
-            carName = "Chevrolet Camaro",
+            carName = "Camporano 666",
             garagePrefabPath = "Prefabs/Cars/Chev666_garage",
             racePrefabPath = "Prefabs/Cars/Chev666",
             mass = 2.5f,
             drag = 2.5f,
-            engineForceMax = 2.5f,
+            engineForceMax = 2.7f,
             engineForceMin = 0.8f,
             engineForceRampUpTime = 250.0f,
             engineForceRampDownTime = 1000.0f,
-            brakingForce = 0.05f
+            brakingForce = 0.05f,
+            expectedSpeedRealUnits_display = 72.0f
         },
         new CarDataModel {
             carId = 2,
@@ -33,19 +34,23 @@ public class AppData : IInstance {
             garagePrefabPath = "Prefabs/Cars/Tor11_garage",
             racePrefabPath = "Prefabs/Cars/Tor11",
             mass = 1.8f,
-            drag = 1.6f,
+            drag = 1.4f,
             engineForceMax = 1.35f,
             engineForceMin = 0.6f,
-            engineForceRampUpTime = 160.0f,
+            engineForceRampUpTime = 600.0f,
             engineForceRampDownTime = 3000.0f,
-            brakingForce = 0.02f
+            brakingForce = 0.02f,
+            expectedSpeedRealUnits_display = 79.9f
         },
     };
     private Dictionary<int, CarDataModel> _carDataModelsDict = new Dictionary<int, CarDataModel>();
 
     private CarStatDisplayDataModel _carStatDisplayData = new CarStatDisplayDataModel {
-        carSpeedMax_game_units = 20.0f,
-        carSpeedConversionFactor_game_to_real = 5.0f
+        carSpeedConversionFactor_game_to_real = 4.5f,
+        carSpeedMax_game_units = 22.222f,
+        carMassMax_game_units = 4.0f,
+        carEngineForceMax_game_units = 4.0f,
+        carHandlingMax_game_units = 1.8f,
     };
     #endregion
 

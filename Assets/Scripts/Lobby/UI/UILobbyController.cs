@@ -1,3 +1,4 @@
+using Data;
 using TimiShared.UI;
 
 namespace Lobby {
@@ -10,9 +11,18 @@ namespace Lobby {
         }
 
         private ILobbyMenuDelegate _lobbyMenuDelegate;
+        private CarDataModel _currentCarDataModel;
 
-        public UILobbyController(ILobbyMenuDelegate lobbyMenuDelegate) {
+        public UILobbyController(ILobbyMenuDelegate lobbyMenuDelegate, CarDataModel currentCarDataModel) {
             this._lobbyMenuDelegate = lobbyMenuDelegate;
+            this._currentCarDataModel = currentCarDataModel;
+        }
+
+        public void UpdateForCurrrentCar(CarDataModel carDataModel) {
+            this._currentCarDataModel = carDataModel;
+            if (this.View != null) {
+                this.View.UpdateForCurrentCar(this._currentCarDataModel);
+            }
         }
 
         protected override void ConfigureView() {
@@ -21,6 +31,7 @@ namespace Lobby {
                 onNextCarClickedCallback = this.HandleNextCarClickedCallback,
                 onPrevCarClickedCallback = this.HandlePrevCarClickedCallback
             });
+            this.View.UpdateForCurrentCar(this._currentCarDataModel);
         }
 
         private void HandleNextCarClickedCallback() {

@@ -45,14 +45,15 @@ namespace Lobby {
             this.View = lobbyViewGO.GetComponent<LobbyView>();
             this.View.AssertNotNull("Lobby View component");
 
-            this.RefreshCurrentCarView();
-
-            this.UIView = new UILobbyController(this);
+            this.UIView = new UILobbyController(this, this.CurrentCar);
             this.UIView.PresentDialog();
+
+            this.RefreshCurrentCarView();
         }
 
         private void RefreshCurrentCarView() {
             this.View.SetCurrentCar(this.CurrentCar);
+            this.UIView.UpdateForCurrrentCar(this.CurrentCar);
         }
 
         #region ILobbyMenuDelegate

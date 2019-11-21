@@ -16,5 +16,7 @@ namespace Data {
 
         public float brakingForce;
 
+        public float expectedSpeedRealUnits_display;
+
     }
 }

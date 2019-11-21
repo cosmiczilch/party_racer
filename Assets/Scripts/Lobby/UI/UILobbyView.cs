@@ -1,8 +1,12 @@
+using Data;
 using TimiShared.UI;
+using UnityEngine;
 
 namespace Lobby {
 
     public class UILobbyView : DialogViewBase {
+
+        [SerializeField] private UICarStatsDisplay _carStatsDisplay = null;
 
         public class Config {
             public System.Action onRaceButtonCallback;
@@ -13,6 +17,10 @@ namespace Lobby {
 
         public void Configure(Config config) {
             this._config = config;
+        }
+
+        public void UpdateForCurrentCar(CarDataModel carDataModel) {
+            this._carStatsDisplay.Configure(carDataModel);
         }
 
         public void OnNextCarClicked() {
