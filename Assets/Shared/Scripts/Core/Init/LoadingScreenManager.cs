@@ -16,7 +16,7 @@ namespace Init {
         [SerializeField] private Animator _loadingScreenAnimator = null;
         [SerializeField] private Animator _textAnimator = null;
 
-        [SerializeField] private float _loadingScreenMinDurationSeconds = 1.5f;
+        [SerializeField] private float _loadingScreenMinDurationSeconds = 0.0f;
         public float MinDurationSeconds {
             get {
                 return this._loadingScreenMinDurationSeconds;

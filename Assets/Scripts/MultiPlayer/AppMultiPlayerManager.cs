@@ -33,9 +33,8 @@ namespace TimiMultiPlayer {
             get { return 2; }
         }
 
-        // TODO: Change this to 5 or something after testing
         protected override byte MaxPlayersPerRoom {
-            get { return 2; }
+            get { return 4; }
         }
 
         protected override float WaitForMorePlayersTimeoutDurationSeconds {

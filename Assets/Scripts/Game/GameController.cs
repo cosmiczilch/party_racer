@@ -2,6 +2,7 @@ using System.Collections;
 using Data;
 using Game.Car;
 using Game.UI;
+using Init;
 using Lobby;
 using TimiMultiPlayer;
 using TimiShared.Extensions;
@@ -90,6 +91,7 @@ namespace Game {
             this.View.AssertNotNull("Game View component");
 
             OnSceneViewsCreated.Invoke();
+            LoadingScreenManager.Instance.ShowLoadingScreen(false);
         }
 
         public bool ReadyToStartGame { get; set; }
