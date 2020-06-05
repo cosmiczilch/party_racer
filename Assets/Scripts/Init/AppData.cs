@@ -21,12 +21,12 @@ public class AppData : IInstance {
             racePrefabPath = "Prefabs/Cars/Chev666",
             mass = 2.5f,
             drag = 2.5f,
-            engineForceMax = 2.7f,
+            engineForceMax = 2.8f,
             engineForceMin = 0.8f,
             engineForceRampUpTime = 250.0f,
             engineForceRampDownTime = 1000.0f,
             brakingForce = 0.05f,
-            expectedSpeedRealUnits_display = 72.0f
+            expectedSpeedRealUnits_display = 74.0f
         },
         new CarDataModel {
             carId = 2,
